@@ -8,17 +8,25 @@ import Input from '../pure_components/Input'
 const TextInputs = ({
   defaultValue = '',
   editInput,
-  textInputs
+  textInputs,
+  requestInputValidation
 }) =>
   <div>
     {textInputs.map(t =>
-        <Input
-          className={'TextInput'}
-          key={t.id}
-          onChange={e => editInput({ id: t.id, value: e.target.value })}
-          type={'text'}
-          value={t.value || defaultValue}
-        />
+        <div className="TextInput" key={t.id}>
+          <Input
+            className={t.isValid ? 'TextInput__input' : 'TextInput__input--invalid'}
+            onChange={e => editInput({ id: t.id, value: e.target.value })}
+            type={'text'}
+            value={t.value || defaultValue}
+          />
+          <a
+            className={'TextInput__button'}
+            onClick={() => requestInputValidation({ id: t.id })}
+          >
+            Validate
+          </a>
+        </div>
     )}
   </div>
 
@@ -31,7 +39,8 @@ const mapStateToProps = state => ({
 const mergeProps = (state, actions, props) => {
   return Object.assign({}, props, {
     textInputs: state.textInputs[props.side],
-    editInput: params => actions.editInput({ ...params, side: props.side })
+    editInput: editProps => actions.editInput({ ...editProps, side: props.side }),
+    requestInputValidation: validateProps => actions.requestInputValidation({ ...validateProps, side: props.side })
   })
 }
 

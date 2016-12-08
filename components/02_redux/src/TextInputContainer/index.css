@@ -1,5 +1,32 @@
 .TextInput {
-  width: 250px;
-  margin-bottom: 30px;
+  display: flex;
+
+  height: 25px;
+  margin: 0 0 30px 0;
+}
+
+.TextInput__input,
+.TextInput__input--invalid {
+  width: 200px;
+  margin-right: 10px;
   padding: 5px 10px;
+}
+
+.TextInput__input--invalid {
+  color: white;
+  background-color: red;
+}
+
+.TextInput__button {
+  display: inline-block;
+
+  padding: 5px 15px;
+
+  cursor: pointer;
+
+  color: white;
+  border-radius: 20px;
+  background-color: purple;
+
+  font-size: smaller;
 }
