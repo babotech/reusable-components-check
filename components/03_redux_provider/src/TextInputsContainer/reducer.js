@@ -7,41 +7,20 @@ import {
 } from './action_types'
 
 
-const initialState = [
-  {
-    id: 1,
-    value: '',
-    isValid: true
-  }
-]
+const initialState = {
+  value: '',
+  isValid: true
+}
 
 
 export default (state = initialState, action) => {
   switch (action.type) {
 
-    case ADD_INPUT:
-      return [
-        ...state,
-        {
-          id: state.reduce((maxId, input) => Math.max(input.id, maxId), -1) + 1,
-          value: action.payload.value,
-          isValid: true
-        }
-      ]
-
     case CHANGE_VALUE:
-      return state.map(input =>
-        input.id === action.payload.id ?
-          { ...input, value: action.payload.value } :
-          input
-      )
+      return { ...state, value: action.payload.value }
 
     case INPUT_VALIDATION_SUCCEEDED:
-      return state.map(input =>
-        input.id === action.payload.id ?
-          { ...input, isValid: action.payload.isValid } :
-          input
-      )
+      return { ...state, isValid: action.payload.isValid }
 
     default:
       return state

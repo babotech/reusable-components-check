@@ -17,11 +17,10 @@ const Api = {
 }
 
 
-function* validateInput(action) {
+function* validateInput() {
    try {
-      const { id } = action.payload
       const isValid = yield call(Api.validate)
-      yield put({type: INPUT_VALIDATION_SUCCEEDED, payload: { id, isValid }})
+      yield put({type: INPUT_VALIDATION_SUCCEEDED, payload: { isValid }})
    } catch (e) {
       yield put({type: INPUT_VALIDATION_FAILED, message: e.message})
    }

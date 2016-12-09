@@ -1,65 +1,71 @@
 import './index.css'
 
-import {
-  addInput,
-  editInput,
-  requestInputValidation
-} from './actions'
-
-import { createStore, applyMiddleware } from 'redux'
-import React from 'react'
-import Input from '../pure_components/Input'
-import createSagaMiddleware from 'redux-saga'
+import * as actionCreators from './actions'
+import React, { PropTypes } from 'react';
+import { Provider, connect } from 'react-redux'
+import { createStore, applyMiddleware, bindActionCreators } from 'redux'
 import reducer from './reducer'
-import textInputSaga from './sagas'
-import { local } from 'redux-fractal'
+import textInputsSaga from './sagas'
+import createSagaMiddleware from 'redux-saga'
+import Input from '../pure_components/Input'
 
 
-const TextInputs = ({
-  defaultValue = '',
+let Wrapped = ({
   editInput,
-  textInputs,
-  requestInputValidation
+  isValid,
+  requestInputValidation,
+  value
 }) =>
-  <div>
-    {textInputs.map(t =>
-        <div className="TextInput" key={t.id}>
-          <Input
-            className={t.isValid ? 'TextInput__input' : 'TextInput__input--invalid'}
-            onChange={e => editInput({ id: t.id, value: e.target.value })}
-            type={'text'}
-            value={t.value || defaultValue}
-          />
-          <a
-            className={'TextInput__button'}
-            onClick={() => requestInputValidation({ id: t.id })}
-          >
-            Validate
-          </a>
-        </div>
-    )}
+  <div className="TextInput">
+    <Input
+      className={isValid ? 'TextInput__input' : 'TextInput__input--invalid'}
+      onChange={e => editInput({ value: e.target.value })}
+      type={'text'}
+      value={value}
+    />
+    <a
+      className={'TextInput__button'}
+      onClick={() => requestInputValidation()}
+    >
+      Validate
+    </a>
   </div>
 
 
-//
-export default local({
-  key: 'textInputsContainer',
-  createStore: props => {
-    const sagaMiddleware = createSagaMiddleware()
-    const store = createStore(
-        reducer,
-        applyMiddleware(sagaMiddleware)
-    )
-    sagaMiddleware.run(textInputSaga)
+const mapStateToProps = s => s
+const mapDispatchToProps = dispatch => ({
+  ...bindActionCreators(actionCreators, dispatch)
+})
+Wrapped = connect(mapStateToProps, mapDispatchToProps)(Wrapped)
 
-    return {
-      store,
-      cleanup: () => sagaMiddleware.cancel()
+
+export default class Container extends React.Component {
+  constructor(props) {
+    super(props)
+
+    const { defaultValue = '' } = this.props
+
+    const state = {
+      value: defaultValue,
+      isValid: true
     }
-  },
-  mapDispatchToProps: dispatch => {
-    addInput: props => dispatch(addInput(props))
-    editInput: props => dispatch(editInput(props))
-    requestInputValidation: props => dispatch(requestInputValidation(props))
+
+    const sagaMiddleware = createSagaMiddleware()
+
+    this.store = createStore(
+      reducer,
+      state,
+      applyMiddleware(sagaMiddleware)
+    )
+
+    sagaMiddleware.run(textInputsSaga)
   }
-})(TextInputs)
+
+  render() {
+    return (
+      <Provider store={this.store}>
+        <Wrapped />
+      </Provider>
+    )
+  }
+}
