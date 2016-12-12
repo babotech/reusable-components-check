@@ -1,3 +1,4 @@
+import './index.css'
 import run from './boilerplate'
 
 import view from './Root/view'
