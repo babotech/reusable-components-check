@@ -1,9 +1,13 @@
 import './index.css'
 
-import * as actionCreators from './actions'
-import React, { PropTypes } from 'react';
-import Input from './pure_components/Input'
+import {
+  editInput,
+  requestInputValidation
+} from './actions'
 
+import React, { PropTypes } from 'react'
+import Input from './pure_components/Input'
+import { view } from 'redux-elm'
 
 
 export default view(({ model, dispatch }) =>
@@ -21,3 +25,4 @@ export default view(({ model, dispatch }) =>
       Validate
     </a>
   </div>
+)
