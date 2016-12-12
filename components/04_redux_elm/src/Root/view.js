@@ -14,18 +14,27 @@ export default view(({ model, dispatch }) =>
     </div>
     <div className="Root-body">
 
-      {/* <div className="Root-body__column">
-        <TextInput defaultValue="Hey!" />
-        <TextInput defaultValue="Ho!" />
-        <TextInput defaultValue="Let's go!" />
-      </div> */}
+      <div className="Root-body__column">
+        <a className="Root__button" onClick={() => dispatch(addInput({role: 'password'}))}>Add input</a>
+
+        {!!model.inputs.password.length && model.inputs.password.map((inputModel, idx) =>
+          <TextInput
+            role={'password'}
+            key={`password-${idx}`}
+            model={inputModel}
+            dispatch={forwardTo(dispatch, 'TextInput', idx)}
+            defaultValue="Hey!"
+          />
+        )}
+      </div>
 
       <div className="Root-body__column">
         <a className="Root__button" onClick={() => dispatch(addInput())}>Add input</a>
 
-        {model.inputs.map((inputModel, idx) =>
+        {!!model.inputs.geolocation.length && model.inputs.geolocation.map((inputModel, idx) =>
           <TextInput
-            key={idx}
+            role={'geolocation'}
+            key={`geolocation-${idx}`}
             model={inputModel}
             dispatch={forwardTo(dispatch, 'TextInput', idx)}
             defaultValue="Hi there."
