@@ -6,13 +6,19 @@
     "react-scripts": "0.8.1"
   },
   "dependencies": {
+    "babel-plugin-transform-object-rest-spread": "^6.20.2",
+    "expect": "^1.20.2",
+    "ignore-styles": "^5.0.1",
+    "jsdom": "^9.8.3",
+    "mocha": "^3.2.0",
     "react": "^15.4.1",
+    "react-addons-test-utils": "^15.4.1",
     "react-dom": "^15.4.1"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "mocha --recursive --compilers js:babel-register --require ./test/helper.js --require ignore-styles",
     "eject": "react-scripts eject"
   }
 }
