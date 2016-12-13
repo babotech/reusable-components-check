@@ -6,10 +6,13 @@ class TextInput extends Component {
     super(props)
 
     this.state = {
-      value: this.props.defaultValue || ''
+      value: this.props.defaultValue || '',
+      isValid: null
     }
 
     this.handleChange = this.handleChange.bind(this)
+    this.handleKeyPress = this.handleKeyPress.bind(this)
+    this.validateInput = this.validateInput.bind(this)
   }
 
   render() {
@@ -19,6 +22,11 @@ class TextInput extends Component {
           type="text"
           value={this.state.value}
           onChange={this.handleChange}
+          onKeyPress={this.handleKeyPress}
+          className={(this.state.isValid === null) ?
+              '' :
+              (this.state.isValid ? 'valid' : 'invalid')
+          }
         />
       </div>
     )
@@ -31,6 +39,17 @@ class TextInput extends Component {
       ...prevState,
       value
     }))
+  }
+
+  handleKeyPress(e) {
+      if (e.key === 'Enter') {
+          this.validateInput()
+      }
+  }
+
+  validateInput() {
+      var isValid = Math.random() < 0.5
+      setTimeout(() => this.setState({ isValid }), 2000)
   }
 }
 
