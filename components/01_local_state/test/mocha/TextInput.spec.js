@@ -1,5 +1,5 @@
 import expect, { spyOn } from 'expect'
-import TextInput from '../src/TextInput'
+import TextInput from '../../src/TextInput'
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {

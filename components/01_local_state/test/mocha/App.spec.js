@@ -1,6 +1,6 @@
 import expect from 'expect'
-import App from '../src/App'
-import TextInput from '../src/TextInput'
+import App from '../../src/App'
+import TextInput from '../../src/TextInput'
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {
